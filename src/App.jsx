@@ -26,8 +26,6 @@ const defaultTopics = {
   projects:   [],
 };
 
-const STORAGE_KEY = "sweng-tracker-v1";
-
 const getInitialState = () => {
   const progress = {}, notes = {};
   Object.keys(defaultTopics).forEach(cat => {
@@ -67,6 +65,7 @@ export default function App() {
   const [editingNote, setEditingNote]   = useState(null);
   const [addingTopic, setAddingTopic]   = useState(false);
   const [newTopicText, setNewTopicText] = useState("");
+  const [newProject, setNewProject] = useState({ name: "", desc: "", status: "Planlıyor", tech: "" });
   const [addingProject, setAddingProject] = useState(false);
   const [loaded, setLoaded]             = useState(false);
   const [saveStatus, setSaveStatus]     = useState("");
@@ -85,7 +84,7 @@ export default function App() {
     if (!loaded || !state) return;
     const t = setTimeout(() => {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        await window.storage.set(STORAGE_KEY, JSON.stringify(state));
         setSaveStatus("✓ Kaydedildi");
         setTimeout(() => setSaveStatus(""), 2000);
       } catch { setSaveStatus("⚠ Kayıt hatası"); }
@@ -225,6 +224,7 @@ export default function App() {
   const Konular = () => {
     const cat    = CATEGORIES.find(c => c.id===activeCategory);
     const topics = allTopics(activeCategory);
+
     return (
       <div style={{ display:"grid", gridTemplateColumns:"230px 1fr", gap:20 }}>
 
@@ -347,6 +347,9 @@ export default function App() {
   /* ══════════ PROJELER ══════════ */
   const ProjelerView = () => {
     const projects = state.projects || [];
+    const statuses = ["Planlıyor", "Devam Ediyor", "Tamamlandı", "Duraklatıldı"];
+    const statusColors = { "Planlıyor": "#64748b", "Devam Ediyor": "#3b82f6", "Tamamlandı": "#10b981", "Duraklatıldı": "#f59e0b" };
+
     return (
       <div>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
