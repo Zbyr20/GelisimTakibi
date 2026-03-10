@@ -70,8 +70,6 @@ export default function App() {
   const [loaded, setLoaded]             = useState(false);
   const [saveStatus, setSaveStatus]     = useState("");
 
-  const newProject = { name: "", desc: "", status: "Planlıyor", tech: "" };
-
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -82,9 +80,13 @@ export default function App() {
 
   useEffect(() => {
     if (!loaded || !state) return;
-    const t = setTimeout(() => {
+    const t = setTimeout(async () => {
       try {
-        await window.storage.set(STORAGE_KEY, JSON.stringify(state));
+        if (window.storage?.set) {
+          await window.storage.set(STORAGE_KEY, JSON.stringify(state));
+        } else {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
         setSaveStatus("✓ Kaydedildi");
         setTimeout(() => setSaveStatus(""), 2000);
       } catch { setSaveStatus("⚠ Kayıt hatası"); }
