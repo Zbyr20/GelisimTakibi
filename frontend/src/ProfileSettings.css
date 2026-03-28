@@ -1,0 +1,220 @@
+/* Ana Temel Renk Değişkeni */
+:root {
+  --primary-color: #d97757;
+  --bg-color: #ffffff;
+  --text-main: #2d2d2d;
+  --text-muted: #737373;
+  --border-color: #e5e5e5;
+}
+
+.open-settings-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  padding: 10px 16px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-main);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: all 0.2s;
+}
+
+.open-settings-btn:hover {
+  background-color: #f9f9f9;
+}
+
+/* Modal Arka Planı (Karanlık efekti) */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+/* Claude Tarzı Kutu Tasarımı */
+.claude-style {
+  background-color: var(--bg-color);
+  width: 700px;
+  height: 450px;
+  border-radius: 16px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Sol Menü */
+.modal-sidebar {
+  width: 220px;
+  background-color: #fcfcfc;
+  border-right: 1px solid var(--border-color);
+  padding: 24px 16px;
+}
+
+.user-mini-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.user-mini-profile h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.user-mini-profile span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.modal-nav button {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.modal-nav button:hover {
+  background-color: #f0f0f0;
+}
+
+.modal-nav button.active {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+/* Sağ İçerik */
+.modal-body {
+  flex: 1;
+  padding: 32px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.info-group {
+  margin-bottom: 20px;
+}
+
+.info-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+}
+
+.info-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fafafa;
+  color: var(--text-main);
+  outline: none;
+}
+
+.info-group input:focus {
+  border-color: var(--primary-color);
+}
+
+.color-picker-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-swatch.selected {
+  border-color: #000;
+  box-shadow: 0 0 0 2px white inset;
+}
+
+.preview-box {
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: #fafafa;
+  border-left-width: 4px;
+}
+
+.demo-btn {
+  padding: 8px 16px;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
