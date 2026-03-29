@@ -12,35 +12,61 @@ export default function GenericTracker({ currentUser, title, categories, default
 
   const storageKey = `${storageKeyPrefix}_${currentUser.email}`;
 
+  // ✅ FİX: Initial state'i optimize ettik
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(storageKey);
-      setState(saved ? JSON.parse(saved) : getInitialState(defaultTopics));
-    } catch { setState(getInitialState(defaultTopics)); }
+    const loadState = () => {
+      try {
+        const saved = localStorage.getItem(storageKey);
+        const initialState = saved ? JSON.parse(saved) : getInitialState(defaultTopics);
+        setState(initialState);
+      } catch (error) {
+        console.error("Error loading state:", error);
+        setState(getInitialState(defaultTopics));
+      }
+    };
+
+    loadState();
     setLoaded(true);
   }, [storageKey, defaultTopics]);
 
+  // ✅ FİX: Debounce ile localStorage'a yazıyoruz
   useEffect(() => {
     if (!loaded || !state) return;
+
     const t = setTimeout(() => {
       try {
         localStorage.setItem(storageKey, JSON.stringify(state));
         setSaveStatus("✓ Kaydedildi");
         setTimeout(() => setSaveStatus(""), 2000);
-      } catch { setSaveStatus("⚠ Hata"); }
+      } catch (error) {
+        console.error("Error saving state:", error);
+        setSaveStatus("⚠ Hata: Veri kaydedilemedi");
+      }
     }, 800);
+
     return () => clearTimeout(t);
   }, [state, loaded, storageKey]);
 
-  if (!loaded || !state) return <div style={{color: accentColor, textAlign:"center", padding:"50px"}}>Yükleniyor...</div>;
+  if (!loaded || !state) {
+    return (
+      <div style={{ color: accentColor, textAlign: "center", padding: "50px" }}>
+        Yükleniyor...
+      </div>
+    );
+  }
 
   const allTopics = (catId) => [...(defaultTopics[catId] || []), ...(state.customTopics[catId] || [])];
+
   const getCatProgress = (catId) => {
     const t = allTopics(catId);
     if (!t.length) return 0;
     return Math.round((t.reduce((s, tp) => s + (state.progress[catId]?.[tp] || 0), 0) / (t.length * 3)) * 100);
   };
-  const totalProgress = () => Math.round(categories.map(c => getCatProgress(c.id)).reduce((a,b)=>a+b,0) / categories.length);
+
+  const totalProgress = () => {
+    if (categories.length === 0) return 0;
+    return Math.round(categories.map(c => getCatProgress(c.id)).reduce((a, b) => a + b, 0) / categories.length);
+  };
 
   const tp = totalProgress();
   const catData = categories.map(c => ({ ...c, pct: getCatProgress(c.id) }));
@@ -50,7 +76,7 @@ export default function GenericTracker({ currentUser, title, categories, default
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "20px" }}>
         <div>
           <h2 style={{ margin: 0, color: accentColor, fontSize: "24px" }}>{title}</h2>
-          <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+          <div style={{ display: "flex", gap: "10px", marginTop: "15px", flexWrap: "wrap" }}>
             <button onClick={() => setActiveTab("dashboard")} style={topNavBtn(accentColor, activeTab === "dashboard")}>📊 İlerleme (Dashboard)</button>
             <button onClick={() => setActiveTab("konular")} style={topNavBtn(accentColor, activeTab === "konular")}>📚 Müfredat & Konular</button>
           </div>
@@ -74,7 +100,7 @@ export default function GenericTracker({ currentUser, title, categories, default
               </div>
               <div style={{ fontSize: "15px", fontWeight: 600, color: "rgba(255,255,255,0.8)", marginBottom: "10px" }}>{cat.label}</div>
               <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: "6px", height: "6px", overflow: "hidden" }}>
-                <div style={{ width: `${cat.pct}%`, height: "100%", background: cat.color, borderRadius: "6px" }} />
+                <div style={{ width: `${cat.pct}%`, height: "100%", background: cat.color, borderRadius: "6px", transition: "width 0.3s ease" }} />
               </div>
             </div>
           ))}
@@ -86,10 +112,12 @@ export default function GenericTracker({ currentUser, title, categories, default
           <div style={{ ...glass({ padding: "16px" }) }}>
             {categories.map(c => (
               <div key={c.id} onClick={() => setActiveCategory(c.id)}
-                style={{ padding: "12px", marginBottom: "6px", borderRadius: "10px", cursor: "pointer",
+                style={{
+                  padding: "12px", marginBottom: "6px", borderRadius: "10px", cursor: "pointer",
                   background: activeCategory === c.id ? c.bg : "transparent",
                   border: `1px solid ${activeCategory === c.id ? `${c.color}44` : "transparent"}`,
-                  display: "flex", alignItems: "center", gap: "10px", transition: "all 0.2s" }}>
+                  display: "flex", alignItems: "center", gap: "10px", transition: "all 0.2s"
+                }}>
                 <span style={{ fontSize: "16px" }}>{c.icon}</span>
                 <span style={{ fontSize: "13px", color: activeCategory === c.id ? c.color : "rgba(255,255,255,0.6)", flex: 1, fontWeight: activeCategory === c.id ? 600 : 400 }}>{c.label}</span>
                 <span style={{ fontSize: "12px", color: c.color, fontWeight: 700 }}>{getCatProgress(c.id)}%</span>
@@ -104,15 +132,17 @@ export default function GenericTracker({ currentUser, title, categories, default
                 const isEditing = editingNote === `${activeCategory}-${topic}`;
                 return (
                   <div key={topic} style={{ ...glass({ padding: "16px", borderColor: level > 0 ? `${LEVEL_TEXT[level]}44` : "rgba(255,255,255,0.09)" }) }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                      <div style={{ flex: 1, fontSize: "14px", fontWeight: 500, color: level > 0 ? "#e2e8f0" : "rgba(255,255,255,0.5)" }}>{topic}</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+                      <div style={{ flex: 1, fontSize: "14px", fontWeight: 500, color: level > 0 ? "#e2e8f0" : "rgba(255,255,255,0.5)", minWidth: "120px" }}>{topic}</div>
                       <div style={{ display: "flex", gap: "6px" }}>
                         {LEVELS.map((lbl, i) => (
                           <button key={i} onClick={() => setState(p => ({ ...p, progress: { ...p.progress, [activeCategory]: { ...p.progress[activeCategory], [topic]: i } } }))} title={lbl}
-                            style={{ width: "32px", height: "32px", borderRadius: "8px", cursor: "pointer",
+                            style={{
+                              width: "32px", height: "32px", borderRadius: "8px", cursor: "pointer",
                               border: `1.5px solid ${level === i ? LEVEL_TEXT[i] : "rgba(255,255,255,0.1)"}`,
                               background: level === i ? `${LEVEL_COLORS[i]}55` : "rgba(255,255,255,0.04)",
-                              color: level === i ? LEVEL_TEXT[i] : "rgba(255,255,255,0.3)", fontSize: "12px", fontWeight: 700 }}>
+                              color: level === i ? LEVEL_TEXT[i] : "rgba(255,255,255,0.3)", fontSize: "12px", fontWeight: 700
+                            }}>
                             {i}
                           </button>
                         ))}
