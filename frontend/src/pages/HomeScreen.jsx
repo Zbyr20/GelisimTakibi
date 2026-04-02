@@ -1,50 +1,76 @@
-import { glass } from "../utils/styles";
+/* ─────────────────────────────────────────────
+   HomeScreen — Claude.ai-inspired greeting page
+───────────────────────────────────────────── */
 
-export default function HomeScreen() {
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 5)  return "İyi geceler";
+  if (h < 12) return "Günaydın";
+  if (h < 17) return "İyi öğleden sonralar";
+  if (h < 22) return "İyi akşamlar";
+  return "İyi geceler";
+}
+
+const SUGGESTIONS = [
+  { emoji: "💻", label: "SW Tracker'ı aç", app: "sw_tracker" },
+  { emoji: "🌍", label: "YDT Tracker'ı aç", app: "ydt_tracker" },
+  { emoji: "📅", label: "Bugünkü hedefler" },
+  { emoji: "📈", label: "İlerleme raporu" },
+];
+
+export default function HomeScreen({ username = "Öğrenci", onNavigate }) {
+  const greeting = getGreeting();
+
   return (
-    <div style={{ 
-      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', 
-      height: '100%', minHeight: '80vh', textAlign: 'center', position: 'relative' 
-    }}>
-      
-      {/* FULL SCREEN HQ BACKGROUND IMAGE */}
-      <div style={{
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        zIndex: -1, overflow: 'hidden'
-      }}>
-        <img 
-          src="/mikasa_hq.png" 
-          alt="Mikasa HQ" 
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', opacity: 0.7 }} 
-        />
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'radial-gradient(circle, transparent 0%, rgba(15, 23, 42, 0.9) 100%)'
-        }} />
-      </div>
+    <div className="greeting-section">
 
-      <h1 style={{
-        fontSize: '4.5rem', fontWeight: 900, background: 'linear-gradient(to right, #ffffff, #a78bfa, #38bdf8)',
-        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: '0 0 10px 0',
-        filter: 'drop-shadow(0px 10px 20px rgba(0,0,0,0.5))', letterSpacing: '-2px', zIndex: 1
-      }}>
-        Mikasa'nın Takibi
+      {/* Main greeting */}
+      <h1 className="greeting-text">
+        {greeting},<br />
+        <em>{username}</em>.
       </h1>
-      <p style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic', fontWeight: 400, letterSpacing: '1px', zIndex: 1, marginBottom: '40px' }}>
-        Hedefine odaklan, asla pes etme.
+
+      <p className="greeting-sub">
+        Bugün neyi takip etmek istersin?<br />
+        Hedefine bir adım daha yaklaşmak için hazırım.
       </p>
 
-      {/* Tracker Buttons in front of the image */}
-      <div style={{ display: 'flex', gap: '30px', zIndex: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
-        <div style={{ ...glass({ padding: "24px", backdropFilter: "blur(12px)", background: "rgba(167, 139, 250, 0.15)" }), width: "240px", cursor: "default" }}>
-          <div style={{ fontSize: "36px", marginBottom: "15px" }}>💻</div>
-          <h3 style={{ margin: "0 0 10px 0", color: "#a78bfa", fontSize: "20px" }}>SW Tracker</h3>
-          <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.7)", margin: 0 }}>Yazılım becerilerini takip et.</p>
+      {/* Suggestion chips */}
+      <div className="suggestion-chips">
+        {SUGGESTIONS.map((s, i) => (
+          <button
+            key={i}
+            className="suggestion-chip"
+            onClick={() => s.app && onNavigate?.(s.app)}
+          >
+            <span style={{ marginRight: 6 }}>{s.emoji}</span>
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tracker cards */}
+      <div className="tracker-cards">
+        <div
+          className="tracker-card"
+          onClick={() => onNavigate?.("sw_tracker")}
+        >
+          <div className="tracker-card-icon">💻</div>
+          <div className="tracker-card-title">SW Tracker</div>
+          <div className="tracker-card-desc">
+            Yazılım mühendisliği becerilerini kategorilere göre takip et.
+          </div>
         </div>
-        <div style={{ ...glass({ padding: "24px", backdropFilter: "blur(12px)", background: "rgba(56, 189, 248, 0.15)" }), width: "240px", cursor: "default" }}>
-          <div style={{ fontSize: "36px", marginBottom: "15px" }}>🌍</div>
-          <h3 style={{ margin: "0 0 10px 0", color: "#38bdf8", fontSize: "20px" }}>YDT Tracker</h3>
-          <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.7)", margin: 0 }}>Dil yeterliliğini takip et.</p>
+
+        <div
+          className="tracker-card"
+          onClick={() => onNavigate?.("ydt_tracker")}
+        >
+          <div className="tracker-card-icon">🌍</div>
+          <div className="tracker-card-title">YDT Tracker</div>
+          <div className="tracker-card-desc">
+            Yabancı dil yeterliliğini konu konu takip et.
+          </div>
         </div>
       </div>
 
