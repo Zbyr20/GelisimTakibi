@@ -12,10 +12,10 @@ function getGreeting() {
 }
 
 const SUGGESTIONS = [
-  { emoji: "💻", label: "SW Tracker'ı aç", app: "sw_tracker" },
-  { emoji: "🌍", label: "YDT Tracker'ı aç", app: "ydt_tracker" },
-  { emoji: "📅", label: "Bugünkü hedefler" },
-  { emoji: "📈", label: "İlerleme raporu" },
+  { label: "SW Tracker'ı aç", app: "sw_tracker" },
+  { label: "YDT Tracker'ı aç", app: "ydt_tracker" },
+  { label: "Bugünkü hedefler" },
+  { label: "İlerleme raporu" },
 ];
 
 export default function HomeScreen({ username = "Öğrenci", onNavigate }) {
@@ -43,7 +43,6 @@ export default function HomeScreen({ username = "Öğrenci", onNavigate }) {
             className="suggestion-chip"
             onClick={() => s.app && onNavigate?.(s.app)}
           >
-            <span style={{ marginRight: 6 }}>{s.emoji}</span>
             {s.label}
           </button>
         ))}
@@ -55,7 +54,6 @@ export default function HomeScreen({ username = "Öğrenci", onNavigate }) {
           className="tracker-card"
           onClick={() => onNavigate?.("sw_tracker")}
         >
-          <div className="tracker-card-icon">💻</div>
           <div className="tracker-card-title">SW Tracker</div>
           <div className="tracker-card-desc">
             Yazılım mühendisliği becerilerini kategorilere göre takip et.
@@ -66,7 +64,6 @@ export default function HomeScreen({ username = "Öğrenci", onNavigate }) {
           className="tracker-card"
           onClick={() => onNavigate?.("ydt_tracker")}
         >
-          <div className="tracker-card-icon">🌍</div>
           <div className="tracker-card-title">YDT Tracker</div>
           <div className="tracker-card-desc">
             Yabancı dil yeterliliğini konu konu takip et.

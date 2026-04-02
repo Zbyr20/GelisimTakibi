@@ -18,10 +18,7 @@ const IconHome    = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="
 const IconCode    = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>;
 const IconGlobe   = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
 const IconLogout  = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>;
-const IconClip    = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>;
-const IconSend    = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>;
 const IconChat    = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>;
-const IconMic     = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>;
 
 const RECENT_CHATS = [
   "SW Tracker - Veri Yapıları",
@@ -34,8 +31,6 @@ export default function App() {
   const [currentUser, setCurrentUser]   = useState(null);
   const [activeApp,   setActiveApp]     = useState("home");
   const [sidebarOpen, setSidebarOpen]   = useState(true);
-  const [inputValue,  setInputValue]    = useState("");
-  const textRef = useRef(null);
 
   useEffect(() => {
     const session = localStorage.getItem("platform_session");
@@ -44,14 +39,6 @@ export default function App() {
       catch { localStorage.removeItem("platform_session"); }
     }
   }, []);
-
-  /* auto-resize textarea */
-  useEffect(() => {
-    if (textRef.current) {
-      textRef.current.style.height = "auto";
-      textRef.current.style.height = Math.min(textRef.current.scrollHeight, 180) + "px";
-    }
-  }, [inputValue]);
 
   const handleLogin  = (user) => {
     localStorage.setItem("platform_session", JSON.stringify(user));
@@ -68,7 +55,7 @@ export default function App() {
   const isCollapsed = !sidebarOpen;
 
   return (
-    <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+    <div className="app-container">
 
       {/* ════════ SIDEBAR ════════ */}
       <aside className={`sidebar${isCollapsed ? " collapsed" : ""}`}>
@@ -155,10 +142,10 @@ export default function App() {
 
           <div className="topbar-right">
             <button className="btn-pill" onClick={() => setActiveApp("sw_tracker")}>
-              <span>💻 SW</span>
+              <span>SW</span>
             </button>
             <button className="btn-pill" onClick={() => setActiveApp("ydt_tracker")}>
-              <span>🌍 YDT</span>
+              <span>YDT</span>
             </button>
             <button className="btn-pill primary">Takibe Al</button>
           </div>
@@ -176,11 +163,11 @@ export default function App() {
             <div style={{ width: "100%", maxWidth: 900 }}>
               <GenericTracker
                 currentUser={currentUser}
-                title="💻 Yazılım Mühendisliği Takibi"
+                title="Yazılım Mühendisliği Takibi"
                 categories={SW_CATEGORIES}
                 defaultTopics={swDefaultTopics}
                 storageKeyPrefix="sw_tracker"
-                accentColor="#cc785c"
+                accentColor="var(--accent)"
               />
             </div>
           )}
@@ -188,53 +175,17 @@ export default function App() {
             <div style={{ width: "100%", maxWidth: 900 }}>
               <GenericTracker
                 currentUser={currentUser}
-                title="🌍 YDT (Yabancı Dil Testi) Takibi"
+                title="YDT (Yabancı Dil Testi) Takibi"
                 categories={YDT_CATEGORIES}
                 defaultTopics={ydtDefaultTopics}
                 storageKeyPrefix="ydt_tracker"
-                accentColor="#4a9d8f"
+                accentColor="var(--accent)"
               />
             </div>
           )}
         </div>
 
-        {/* ════════ INPUT AREA ════════ */}
-        <div className={`input-wrapper${isCollapsed ? " sidebar-collapsed" : ""}`}>
-          <div className="input-container">
-            <textarea
-              ref={textRef}
-              className="input-textarea"
-              placeholder="Takibine eklemek istediğin konuyu yaz…"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  setInputValue("");
-                }
-              }}
-              rows={1}
-            />
-            <div className="input-actions">
-              <div className="input-action-left">
-                <button className="input-icon-btn" title="Dosya ekle">
-                  <IconClip />
-                </button>
-                <button className="input-icon-btn" title="Sesli yaz">
-                  <IconMic />
-                </button>
-              </div>
-              <button
-                className="btn-send"
-                disabled={!inputValue.trim()}
-                onClick={() => setInputValue("")}
-                title="Gönder"
-              >
-                <IconSend />
-              </button>
-            </div>
-          </div>
-        </div>
+
 
       </div>
     </div>

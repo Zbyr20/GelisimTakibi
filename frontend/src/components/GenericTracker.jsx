@@ -3,9 +3,9 @@ import { getInitialState } from "../constants/data";
 
 /* ── Level config ── */
 const LEVELS      = ["Başlamadım", "Öğreniyorum", "Biliyorum", "Uzmanım"];
-const LEVEL_COLORS = ["#e5e3dd", "#f5c069", "#5aacf5", "#5dc98a"];
-const LEVEL_TEXT   = ["#9b9890",  "#b07d20",  "#1b6fb5",  "#1f7a4a"];
-const LEVEL_BG     = ["rgba(155,152,144,0.1)", "rgba(245,192,105,0.12)", "rgba(90,172,245,0.12)", "rgba(93,201,138,0.12)"];
+const LEVEL_COLORS = ["#2c2e33", "#5c5f66", "#868e96", "#ced4da"];
+const LEVEL_TEXT   = ["#5c5f66", "#868e96", "#adb5bd", "#f8f9fa"];
+const LEVEL_BG     = ["rgba(44,46,51,0.12)", "rgba(92,95,102,0.12)", "rgba(134,142,150,0.12)", "rgba(206,212,218,0.12)"];
 
 /* ── Tiny icon components ── */
 const IconChevron = ({ open }) => (
@@ -143,7 +143,7 @@ function TopicRow({ topic, level, note, accentColor, onLevelChange, onNoteChange
 ═══════════════════════════════════════════════════════ */
 export default function GenericTracker({
   currentUser, title, categories, defaultTopics,
-  storageKeyPrefix, accentColor = "#cc785c"
+  storageKeyPrefix, accentColor = "var(--accent)"
 }) {
   const [state,          setState]          = useState(null);
   const [activeTab,      setActiveTab]      = useState("dashboard");
@@ -243,8 +243,8 @@ export default function GenericTracker({
         width: "fit-content",
       }}>
         {[
-          { id: "dashboard", label: "📊 Dashboard" },
-          { id: "konular",   label: "📚 Konular"   },
+          { id: "dashboard", label: "Dashboard" },
+          { id: "konular",   label: "Konular"   },
         ].map(tab => (
           <button key={tab.id}
             onClick={() => setActiveTab(tab.id)}
@@ -289,7 +289,7 @@ export default function GenericTracker({
                 }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                  <span style={{ fontSize: 26 }}>{cat.icon}</span>
+                  {cat.icon && <span style={{ fontSize: 26 }}>{cat.icon}</span>}
                   <span style={{ fontSize: 20, fontWeight: 700, color: cat.color }}>{pct}%</span>
                 </div>
                 <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)", marginBottom: 12 }}>{cat.label}</div>
@@ -334,7 +334,7 @@ export default function GenericTracker({
                     boxShadow: isActive ? "0 1px 4px rgba(0,0,0,0.07)" : "none",
                   }}
                 >
-                  <span style={{ fontSize: 15 }}>{c.icon}</span>
+                  {c.icon && <span style={{ fontSize: 15 }}>{c.icon}</span>}
                   <span style={{
                     flex: 1, fontSize: 13, fontWeight: isActive ? 600 : 400,
                     color: isActive ? "var(--text-primary)" : "var(--text-secondary)",

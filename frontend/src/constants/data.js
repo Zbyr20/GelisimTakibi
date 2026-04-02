@@ -1,8 +1,8 @@
 export const SW_CATEGORIES = [
-  { id: "algorithms", label: "Algoritmalar", icon: "🧮", color: "#a78bfa", bg: "rgba(167,139,250,0.12)" },
-  { id: "languages",  label: "Diller",       icon: "💻", color: "#38bdf8", bg: "rgba(56,189,248,0.12)" },
-  { id: "web",        label: "Web",          icon: "🌐", color: "#f472b6", bg: "rgba(244,114,182,0.12)" },
-  { id: "databases",  label: "Veritabanı",   icon: "🗄️", color: "#4ade80", bg: "rgba(74,222,128,0.12)" }
+  { id: "algorithms", label: "Algoritmalar", icon: "", color: "#6c757d", bg: "rgba(108,117,125,0.12)" },
+  { id: "languages",  label: "Diller",       icon: "", color: "#adb5bd", bg: "rgba(173,181,189,0.12)" },
+  { id: "web",        label: "Web",          icon: "", color: "#868e96", bg: "rgba(134,142,150,0.12)" },
+  { id: "databases",  label: "Veritabanı",   icon: "", color: "#495057", bg: "rgba(73,80,87,0.12)" }
 ];
 
 export const swDefaultTopics = {
@@ -13,11 +13,11 @@ export const swDefaultTopics = {
 };
 
 export const YDT_CATEGORIES = [
-  { id: "grammar",    label: "Dilbilgisi",    icon: "📖", color: "#f472b6", bg: "rgba(244,114,182,0.12)" },
-  { id: "vocabulary", label: "Kelime Bilgisi",icon: "🧠", color: "#38bdf8", bg: "rgba(56,189,248,0.12)" },
-  { id: "reading",    label: "Okuma",         icon: "👁️", color: "#4ade80", bg: "rgba(74,222,128,0.12)" },
-  { id: "skills",     label: "Soru Tipleri",  icon: "🎯", color: "#fb923c", bg: "rgba(251,146,60,0.12)" },
-  { id: "exams",      label: "Denemeler",     icon: "📝", color: "#a78bfa", bg: "rgba(167,139,250,0.12)" }
+  { id: "grammar",    label: "Dilbilgisi",    icon: "", color: "#868e96", bg: "rgba(134,142,150,0.12)" },
+  { id: "vocabulary", label: "Kelime Bilgisi",icon: "", color: "#adb5bd", bg: "rgba(173,181,189,0.12)" },
+  { id: "reading",    label: "Okuma",         icon: "", color: "#495057", bg: "rgba(73,80,87,0.12)" },
+  { id: "skills",     label: "Soru Tipleri",  icon: "", color: "#5c5f66", bg: "rgba(92,95,102,0.12)" },
+  { id: "exams",      label: "Denemeler",     icon: "", color: "#6c757d", bg: "rgba(108,117,125,0.12)" }
 ];
 
 export const ydtDefaultTopics = {

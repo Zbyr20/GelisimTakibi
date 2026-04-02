@@ -14,7 +14,7 @@ const EyeIcon = ({ show }) => show ? (
 
 const LogoMark = () => (
   <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-    <rect width="36" height="36" rx="10" fill="#cc785c"/>
+    <rect width="36" height="36" rx="10" fill="var(--accent)"/>
     <path d="M11 25 L18 11 L25 25" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M13.5 20.5 H22.5" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
   </svg>
@@ -44,7 +44,7 @@ export default function LoginScreen({ onLogin }) {
     borderRadius: 12,
     border: `1.5px solid ${
       errors[field] ? "#e57373" :
-      focused === field ? "rgba(204,120,92,0.5)" :
+      focused === field ? "var(--accent)" :
       "var(--border-light)"
     }`,
     background: focused === field ? "#fff" : "var(--bg-main)",
@@ -54,7 +54,7 @@ export default function LoginScreen({ onLogin }) {
     transition: "all 0.2s",
     fontFamily: "Inter, sans-serif",
     boxShadow: focused === field
-      ? "0 0 0 3px rgba(204,120,92,0.1)"
+      ? "0 0 0 3px var(--accent-muted)"
       : "none",
   });
 
@@ -72,13 +72,13 @@ export default function LoginScreen({ onLogin }) {
       <div style={{
         position: "fixed", top: "-10%", right: "-5%",
         width: 400, height: 400,
-        background: "radial-gradient(circle, rgba(204,120,92,0.08) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(173,181,189,0.08) 0%, transparent 70%)",
         borderRadius: "50%", pointerEvents: "none",
       }} />
       <div style={{
         position: "fixed", bottom: "-15%", left: "-5%",
         width: 500, height: 500,
-        background: "radial-gradient(circle, rgba(74,157,143,0.06) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(134,142,150,0.06) 0%, transparent 70%)",
         borderRadius: "50%", pointerEvents: "none",
       }} />
 
@@ -179,7 +179,7 @@ export default function LoginScreen({ onLogin }) {
               letterSpacing: "0.01em",
             }}
             onMouseEnter={e => {
-              e.target.style.background = "#1a1815";
+              e.target.style.background = "var(--accent-light)";
               e.target.style.transform = "translateY(-1px)";
               e.target.style.boxShadow = "0 6px 20px rgba(0,0,0,0.18)";
             }}
